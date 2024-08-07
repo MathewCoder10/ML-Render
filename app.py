@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, jsonify
 import pickle
 import numpy as np
 
@@ -11,9 +11,10 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict_placement():
-    cgpa = float(request.form.get('cgpa'))
-    iq = int(request.form.get('iq'))
-    profile_score = int(request.form.get('profile_score'))
+    data = request.get_json(force=True)
+    cgpa = float(data['cgpa'])
+    iq = int(data['iq'])
+    profile_score = int(data['profile_score'])
 
     # Prediction
     result = model.predict(np.array([cgpa, iq, profile_score]).reshape(1, 3))
@@ -23,6 +24,7 @@ def predict_placement():
     else:
         result = 'Not Placed'
 
-    return render_template('index.html', result=result)
+    return jsonify({'result': result})
+
 if __name__ == "__main__":
     app.run(debug=True)
