@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Placement Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #666;
+        }
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #4cae4c;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9e9e9;
+            border-radius: 5px;
+            color: #333;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            var cgpa = document.forms["predictForm"]["cgpa"].value;
+            var iq = document.forms["predictForm"]["iq"].value;
+            var profile_score = document.forms["predictForm"]["profile_score"].value;
+
+            if (isNaN(cgpa) || cgpa < 1 || cgpa > 10) {
+                alert("CGPA must be a number between 1 and 10.");
+                return false;
+            }
+            if (isNaN(iq) || iq < 70 || iq > 160) {
+                alert("IQ must be an integer between 70 and 160.");
+                return false;
+            }
+            if (isNaN(profile_score) || profile_score < 10 || profile_score > 100) {
+                alert("Profile Score must be an integer between 10 and 100.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Student Placement Predictor</h1>
+    <form name="predictForm" method="post" action="/predict" onsubmit="return validateForm()">
+        <label>CGPA</label>
+        <input type="text" name="cgpa" placeholder="Enter CGPA" required>
+
+        <label>IQ</label>
+        <input type="text" name="iq" placeholder="Enter IQ" required>
+
+        <label>Profile Score</label>
+        <input type="text" name="profile_score" placeholder="Enter Profile Score" required>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if result %}
+        <div class="result">{{ result }}</div>
+    {% endif %}
+</div>
+
+</body>
+</html>
